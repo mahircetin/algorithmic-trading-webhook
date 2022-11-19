@@ -1,0 +1,19 @@
+{
+	"name": "robot",
+	"version": "1.0.0",
+	"description": "Algorithmic trading automation",
+	"main": "index.js",
+	"scripts": {
+		"format": "prettier --write \"./**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
+	},
+	"author": "Mahir Çetin",
+	"license": "ISC",
+	"devDependencies": {
+		"prettier": "^2.7.1"
+	},
+	"dependencies": {
+		"express": "^4.18.2",
+		"lodash": "^4.17.21",
+		"node-binance-api": "^0.13.1"
+	}
+}
