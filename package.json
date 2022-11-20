@@ -1,7 +1,7 @@
 {
-	"name": "robot",
+	"name": "algorithmic-trading-webhook",
 	"version": "1.0.0",
-	"description": "Algorithmic trading automation",
+	"description": "Algorithmic trading webhook for binance",
 	"main": "index.js",
 	"scripts": {
 		"format": "prettier --write \"./**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
