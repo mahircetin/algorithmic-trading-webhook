@@ -2,9 +2,7 @@
 
 const { get, find, isUndefined } = require("lodash");
 
-const precisions = {
-	BTCBUSD: 3,
-};
+const precisions = require("../assets/precisions");
 
 module.exports = async ({ request, asset, binance }) => {
 	let margin;
