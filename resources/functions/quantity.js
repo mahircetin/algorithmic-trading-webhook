@@ -1,0 +1,44 @@
+"use strict";
+
+const { get, find, isUndefined } = require("lodash");
+
+const getPrecisions = require("./precision");
+
+// MARKET | get price from exchange and calculate margin
+// LIMIT | get price from request body and calculate margin
+// CLOSE, STOP_MARKET, TAKE_PROFIT_MARKET order | get previous order quantity and calculate margin
+
+module.exports = async ({
+	type,
+	ticker,
+	risk,
+	price,
+	amount,
+	asset,
+	account,
+	binance,
+}) => {
+	let margin;
+
+	const assets = get(account, "assets", []);
+	const positions = get(account, "positions", []);
+	const collateral = find(assets, (i) => i.asset === asset);
+	const position = find(positions, (i) => i.symbol === ticker);
+	const balance = get(collateral, "availableBalance", 0);
+	const leverage = get(position, "leverage", 1);
+
+	const precision = await getPrecisions({ ticker, binance });
+
+	if (type === "OPEN" && isUndefined(price)) {
+		const prices = await binance.futuresPrices();
+		const mark = get(prices, ticker);
+
+		margin = (((balance * risk) / 100) * leverage) / mark;
+	} else if (type === "OPEN") {
+		margin = (((balance * risk) / 100) * leverage) / price;
+	} else {
+		margin = (get(position, "positionAmt", 0) * amount) / 100;
+	}
+
+	return Math.round(margin * 10 ** precision) / 10 ** precision;
+};

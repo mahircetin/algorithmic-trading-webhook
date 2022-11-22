@@ -2,18 +2,21 @@
 
 const { get, isUndefined } = require("lodash");
 
-module.exports = async ({ ticker, position, binance }) => {
+const fetch = require("../../functions/fetch");
+
+module.exports = async ({ binance, ...context }) => {
 	let set;
 
-	const quantity = get(position, "positionAmt", 0);
-	const counter = quantity > 0 ? "SELL" : "BUY";
+	const { ticker, quantity } = await fetch({ ...context, binance });
 
-	if (quantity != 0) {
+	if (quantity > 0) {
+		const counter = quantity > 0 ? "SELL" : "BUY";
+
 		set = await binance.futuresOrder(counter, ticker, quantity, false, {
 			reduceOnly: true,
 		});
 
-		if (isUndefined(get(set, "orderId")) === true) {
+		if (isUndefined(get(set, "orderId"))) {
 			console.error("Cannot close previous position:", get(set, "code"));
 
 			return false;
