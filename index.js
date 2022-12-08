@@ -6,7 +6,8 @@ const orderClose = require("./resources/sources/order/close");
 const orderOpen = require("./resources/sources/order/open");
 const orderSetup = require("./resources/sources/order/setup");
 
-const { ASSET, APIKEY, APISECRET } = process.env;
+const { ASSET, BINANCE } = process.env;
+const { APIKEY, APISECRET } = JSON.parse(BINANCE);
 
 const server = express();
 const binance = new Binance().options({
