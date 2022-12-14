@@ -30,19 +30,10 @@ module.exports = async ({
 
 	const precision = await getPrecisions({ ticker, binance });
 
-	if (type === "OPEN" && isUndefined(price))
-		price = get(await binance.futuresPrices(), ticker);
+	if (type === "OPEN") {
+		if (isUndefined(price)) price = get(await binance.futuresPrices(), ticker);
 
-	if (
-		type === "OPEN" &&
-		isUndefined(risk) === false &&
-		isUndefined(stop) === false
-	) {
-		margin = ((balance / 100) * risk) / Math.abs(price - stop);
-	} else if (type === "OPEN" && isUndefined(risk) === false) {
-		margin = (((balance * risk) / 100) * leverage) / price;
-	} else if (type === "OPEN") {
-		margin = (balance * leverage) / price;
+		margin = ((balance / 100) * (risk || 100)) / Math.abs(price - (stop || 0));
 	} else {
 		margin = (get(position, "positionAmt", 0) * amount) / 100;
 	}
