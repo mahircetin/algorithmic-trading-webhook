@@ -8,7 +8,11 @@
 	"side": "BUY",
 	"ticker": "ETHUSDT",
 	"risk": "5",
-	"price": "1000"
+	"price": "1100",
+	"scopes": {
+		"stop": "1000", 
+		"profit": "1200"
+	}
 }
 ```
 
@@ -32,7 +36,8 @@
 ```json
 {
 	"type": "CLOSE", 
-	"ticker": "ETHUSDT"
+	"ticker": "ETHUSDT",
+	"amount": "25"
 }
 ```
 

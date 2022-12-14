@@ -9,6 +9,7 @@ module.exports = async ({ params, asset, account, binance }) => {
 	const side = get(params, "side");
 	const ticker = get(params, "ticker");
 	const price = get(params, "price");
+	const stop = get(params, "stop");
 	let quantity = get(params, "quantity");
 
 	quantity = isUndefined(quantity)
@@ -17,6 +18,7 @@ module.exports = async ({ params, asset, account, binance }) => {
 				ticker,
 				risk: get(params, "risk"),
 				price,
+				stop,
 				amount: get(params, "amount"),
 				asset,
 				account,
@@ -33,7 +35,7 @@ module.exports = async ({ params, asset, account, binance }) => {
 		ticker,
 		quantity,
 		price,
-		stop: get(params, "stop"),
+		stop,
 		profit: get(params, "profit"),
 	};
 };

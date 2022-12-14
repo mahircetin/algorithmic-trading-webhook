@@ -13,6 +13,7 @@ module.exports = async ({
 	ticker,
 	risk,
 	price,
+	stop,
 	amount,
 	asset,
 	account,
@@ -29,13 +30,17 @@ module.exports = async ({
 
 	const precision = await getPrecisions({ ticker, binance });
 
-	if (type === "OPEN" && isUndefined(price)) {
-		const prices = await binance.futuresPrices();
-		const mark = get(prices, ticker);
+	if (type === "OPEN" && isUndefined(price))
+		price = get(await binance.futuresPrices(), ticker);
 
-		margin = (((balance * risk) / 100) * leverage) / mark;
+	if (
+		type === "OPEN" &&
+		isUndefined(risk) === false &&
+		isUndefined(stop) === false
+	) {
+		margin = ((balance / 100) * risk) / Math.abs(price - stop);
 	} else if (type === "OPEN") {
-		margin = (((balance * risk) / 100) * leverage) / price;
+		margin = (balance * leverage) / price;
 	} else {
 		margin = (get(position, "positionAmt", 0) * amount) / 100;
 	}
