@@ -39,6 +39,8 @@ module.exports = async ({
 		isUndefined(stop) === false
 	) {
 		margin = ((balance / 100) * risk) / Math.abs(price - stop);
+	} else if (type === "OPEN" && isUndefined(risk) === false) {
+		margin = (((balance * risk) / 100) * leverage) / price;
 	} else if (type === "OPEN") {
 		margin = (balance * leverage) / price;
 	} else {
